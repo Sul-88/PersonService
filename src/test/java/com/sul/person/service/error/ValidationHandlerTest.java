@@ -25,6 +25,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import com.sul.person.service.config.MessageSourceConfiguration;
 
+/**
+ * @author Sulaiman Abboud
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = MessageSourceConfiguration.class, loader = AnnotationConfigContextLoader.class)
 public class ValidationHandlerTest {

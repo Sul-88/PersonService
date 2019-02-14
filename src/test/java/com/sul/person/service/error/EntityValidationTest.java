@@ -15,6 +15,9 @@ import org.junit.Test;
 
 import com.sul.person.service.dto.PersonDTO;
 
+/**
+ * @author Sulaiman Abboud
+ */
 public class EntityValidationTest {
 
 	private Validator validator;

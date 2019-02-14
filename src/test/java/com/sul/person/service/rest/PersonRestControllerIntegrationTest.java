@@ -29,10 +29,12 @@ import com.sul.person.service.repository.PersonJpaRepository;
 
 /**
  * @author sulaiman
+ * 
+ *         Testing PersonRestController: Database must be connected
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = PersonApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
-public class PersonRestControllerTest {
+public class PersonRestControllerIntegrationTest {
 
 	@Spy
 	private PersonRestController restController;
@@ -154,6 +156,27 @@ public class PersonRestControllerTest {
 		assertNotNull(response);
 		assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
 		assertNull(response.getBody());
+	}
+
+	@Test
+	public void deltePersonTest() {
+		PersonDTO person = new PersonDTO();
+		person.setId(11l);
+		when(personJpaRepository.getPersonById(11l)).thenReturn(person);
+		ResponseEntity<PersonDTO> response = restController.deletePerson(11l);
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+		PersonDTO responseBody = response.getBody();
+		assertNull(responseBody);
+	}
+
+	@Test
+	public void deltePersonNotFoundTest() {
+		when(personJpaRepository.getPersonById(11l)).thenReturn(null);
+		ResponseEntity<PersonDTO> response = restController.deletePerson(11l);
+		assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+		PersonDTO responseBody = response.getBody();
+		assertNotNull(responseBody);
+		assertTrue(responseBody instanceof PersonError);
 	}
 
 	@After
