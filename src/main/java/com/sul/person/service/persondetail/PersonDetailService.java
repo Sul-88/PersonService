@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -20,18 +22,20 @@ import com.sul.person.service.repository.PersonDetailJpaRepository;
  */
 @Service
 public class PersonDetailService implements UserDetailsService {
+	private static final Logger log = LogManager.getLogger(PersonDetailService.class);
 
 	@Autowired
 	private PersonDetailJpaRepository personDetailJpaRepository;
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		PersonDetailDTO user = personDetailJpaRepository.findByUsername(username);
-		if (user == null) {
-			throw new UsernameNotFoundException("Person not found with user-name: " + username);
+	public UserDetails loadUserByUsername(String personName) throws UsernameNotFoundException {
+		PersonDetailDTO personDetail = personDetailJpaRepository.findByUsername(personName);
+		if (personDetail == null) {
+			throw new UsernameNotFoundException("Person not found with name: " + personName);
 		}
-		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-				getAuthorities(user));
+		log.debug("PersonDetails for name {} has been found", personName);
+		return new org.springframework.security.core.userdetails.User(personDetail.getUsername(),
+				personDetail.getPassword(), getAuthorities(personDetail));
 	}
 
 	private Collection<GrantedAuthority> getAuthorities(PersonDetailDTO personDetail) {
