@@ -92,6 +92,11 @@ public class PersonRestController {
 		return new ResponseEntity<PersonDTO>(person, HttpStatus.CREATED);
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @return {@link ResponseEntity} that has not content
+	 */
 	@Transactional
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasAuthority('ADMIN')")
@@ -109,6 +114,12 @@ public class PersonRestController {
 		return new ResponseEntity<PersonDTO>(HttpStatus.OK);
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @param person
+	 * @return {@link ResponseEntity} contains the created person
+	 */
 	@Transactional
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PersonDTO> updatePerson(@PathVariable("id") final Long id,
